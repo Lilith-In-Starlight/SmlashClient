@@ -1,0 +1,31 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=4
+
+[application]
+
+config/name="Smlash"
+config/description="The Esplort of all ages, straight from the antimaterial plane, at the mercy of the strongest hands."
+config/icon="res://icon.png"
+
+[autoload]
+
+Server="*res://Autoload/Server.gd"
+
+[display]
+
+window/size/width=800
+window/size/height=450
+window/stretch/mode="viewport"
+window/stretch/aspect="keep_height"
+
+[rendering]
+
+threads/thread_model=2
+environment/default_environment="res://default_env.tres"
