@@ -2,7 +2,6 @@ extends Control
 
 
 var lobby_started := false
-var host := false
 
 func _ready():
 	pass
