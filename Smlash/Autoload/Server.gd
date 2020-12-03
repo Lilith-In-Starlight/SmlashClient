@@ -39,6 +39,9 @@ remote func register_player():
 	rset("players", players + 1)
 	rpc_id(get_tree().get_rpc_sender_id(), "set_player_local_player", players)
 
+remote func update_player_server_pos(ppath, pos, spd):
+	rpc_unreliable("update_player_pos_from_server", ppath, pos, spd)
+
 # Cllient functions
 func on_connected_ok():
 	rpc_id(1, "register_player")
@@ -55,3 +58,7 @@ func on_connected_fail():
 
 remote func set_player_local_player(lpid):
 	local_id = lpid
+
+remotesync func update_player_pos_from_server(ppath, pos, spd):
+	get_node(ppath).go_to = pos
+	get_node(ppath).go_at = spd
