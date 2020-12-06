@@ -36,4 +36,4 @@ After an Electoral Tournament, an End Of Season shall start, in which storytelli
 
 ## The Rulebook
 
-Every Campaign is to have a Rulebook. Traditionally, these are heavily redacted, and their information is released after important events occur. The Rulebook shall define terms such as Fighter, Stage, and all the mechanics that are going to be in place during a Campaign. This is the rulebook used during the first Smlash Campaign since the returned: https://demo.hedgedoc.org/s/bioPJl9bR#. The Rulebook shall not conflict with anything stated here.
+Every Campaign is to have a Rulebook. Traditionally, these are heavily redacted, and their information is released after important events occur. The Rulebook shall define terms such as Fighter, Stage, and all the mechanics that are going to be in place during a Campaign. This is the rulebook used during the first Smlash Campaign since the returned: https://demo.hedgedoc.org/s/bioPJl9bR#. The Rulebook shall not conflict with anything stated here, no matter the specific Campaign.
