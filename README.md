@@ -3,7 +3,7 @@ The esplort of the ages, at the mercy of the strongest hands. The client connect
 
 # What The Heck Is This
 
-Smlash is an indie ethical source (CNPLv5+ licensed) Smash-like combat RPG, similar to a TTRPG in the way that players interact with it as a storytelling device. Smlash is intended for specific groups or “Campaigns”, and one or more of a group’s members will be the Hosts of the Campaign. The Hosts have to know enough about [Godot](godotengine.org) game development to make changes to it according to the events that occur. It is heavily inspired by [Blaseball](blaseball.com), the browser-based surrealist horror comedy sports fan simulator. It is said that blaseball is a splort, so I will define *splort* as a word that means *surreal horror comedy sport*. Following that definition, Smlash is an esplort.
+Smlash is an indie ethical open source (CNPLv5+ licensed) Smash-like combat RPG, similar to a TTRPG in the way that players interact with it as a storytelling device. Smlash is intended for specific groups or “Campaigns”, and one or more of a group’s members will be the Hosts of the Campaign. The Hosts have to know enough about [Godot](godotengine.org) game development to make changes to it according to the events that occur. It is heavily inspired by [Blaseball](blaseball.com), the browser-based surrealist horror comedy sports fan simulator. It is said that blaseball is a splort, so I will define *splort* as a word that means *surreal horror comedy sport*. Following that definition, Smlash is an esplort.
 
 ## Campaigns and Seasons
 
