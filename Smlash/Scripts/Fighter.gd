@@ -16,12 +16,15 @@ const FRIC := 50
 const AFRIC := 70
 const JUMP := -800
 
+var health := 0.0
 var fighter_id := 0
 var speed := Vector2(0, 0)
 var air_jumps := 2
 var holding_up := false
 
 var state = STATES.ON_AIR
+
+var time_since_attack := 0
 
 # Server Vars
 var go_to := Vector2(0, 0)
@@ -69,13 +72,24 @@ func _physics_process(delta):
 		
 		holding_up = Input.is_key_pressed(KEY_UP)
 		
-		speed = move_and_slide(speed, Vector2.UP)
-		if Server.host:
-			Server.rpc_unreliable("update_player_pos_from_server", get_path(), position, speed.length())
+
+		if health == Server.player_data[fighter_id]["health"]:
+			if time_since_attack > 0:
+				speed = Vector2.ZERO
+				time_since_attack -= 1
+			if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
+				time_since_attack = 25
+				Server.rpc_id(1, "player_attacks", get_path(), 0.1, 64)
+			
+			speed = move_and_slide(speed, Vector2.UP)
 		else:
-			Server.rpc_unreliable_id(1, "update_player_server_pos", get_path(), position, speed.length())
+			health = Server.player_data[fighter_id]["health"]
+		
+		Server.rpc_unreliable_id(1, "update_player_server_pos", position, speed.length(), Server.local_id)
 	else:
-		if go_at != 0:
+		go_to = Server.player_data[fighter_id]["position"]
+		go_at = Server.player_data[fighter_id]["cspeed"]
+		if go_at != 0 and position.distance_to(go_to) < 100:
 			position = position.move_toward(go_to, go_at*delta)
 		else:
 			position += (go_to - position) / 2

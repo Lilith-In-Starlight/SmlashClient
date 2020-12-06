@@ -3,20 +3,17 @@ extends Node
 var host := false
 remotesync var players := 0
 var local_id := -1
-remotesync var inputs_0 := [false, false, false, false]
-remotesync var inputs_1 := [false, false, false, false]
-remotesync var inputs_2 := [false, false, false, false]
-remotesync var inputs_3 := [false, false, false, false]
+var attacks := {}
+var attacks_ever := 0
+var player_data := {
+	
+}
 
-func start_host():
-	host = true
-	var peer := NetworkedMultiplayerENet.new()
-	peer.create_server(5555, 8)
-	get_tree().network_peer = peer
-	local_id = 0
-	get_tree().connect("network_peer_connected", self, "on_entity_join")
-	get_tree().connect("network_peer_disconnected", self, "on_entity_leave")
-	print("Host")
+var local_data := {
+	"health" : 0.0,
+	"position" : Vector2(0, 0),
+	"cspeed" : 0.0,
+}
 
 func join(ip):
 	host = false
@@ -28,23 +25,9 @@ func join(ip):
 	get_tree().connect("server_disconnected", self, "on_server_disconnected")
 	print("Client")
 
-# Server functions
-func on_entity_join(id):
-	print("Player joined with id: " + str(id))
-
-func on_entity_leave(id):
-	print("Player left with id: " + str(id))
-
-remote func register_player():
-	rset("players", players + 1)
-	rpc_id(get_tree().get_rpc_sender_id(), "set_player_local_player", players)
-
-remote func update_player_server_pos(ppath, pos, spd):
-	rpc_unreliable("update_player_pos_from_server", ppath, pos, spd)
-
 # Cllient functions
 func on_connected_ok():
-	rpc_id(1, "register_player")
+	rpc_id(1, "register_player", local_data)
 	print("Conncted")
 
 func on_server_disconnected():
@@ -59,6 +42,8 @@ func on_connected_fail():
 remote func set_player_local_player(lpid):
 	local_id = lpid
 
-remotesync func update_player_pos_from_server(ppath, pos, spd):
-	get_node(ppath).go_to = pos
-	get_node(ppath).go_at = spd
+remotesync func update_player_data_from_server(data):
+	player_data = data
+
+remote func update_player_data(data):
+	player_data = data

@@ -17,3 +17,5 @@ shape = SubResource( 1 )
 
 [node name="Polygon2D" type="Polygon2D" parent="StaticBody2D"]
 polygon = PoolVector2Array( 140.369, 295.32, 141, 435, 661.158, 435.123, 660.196, 295.423 )
+
+[node name="Players" type="Node" parent="."]
