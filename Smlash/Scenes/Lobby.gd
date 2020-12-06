@@ -2,6 +2,7 @@ extends Node2D
 
 var lobby_started := false
 var game_started := false
+var ip := "127.0.0.1"
 
 func _ready():
 	pass
@@ -9,7 +10,7 @@ func _ready():
 func _process(delta):
 	if not lobby_started:
 		if Input.is_key_pressed(KEY_C):
-			Server.join("fdfd::1af4:a824")
+			Server.join(ip)
 			lobby_started = true
 			
 	elif not game_started:
