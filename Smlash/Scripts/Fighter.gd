@@ -79,8 +79,8 @@ func _physics_process(delta):
 			
 			holding_up = Input.is_key_pressed(KEY_UP)
 			
-
-			if health == Server.player_data[fighter_id]["health"]:
+			
+			if is_equal_approx(health, Server.player_data[fighter_id]["health"]):
 				if time_since_attack > 0:
 					time_since_attack -= 1
 				if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
