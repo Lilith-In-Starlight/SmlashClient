@@ -10,6 +10,7 @@ enum MENUS {
 }
 
 onready var MainMenu := $MainMenu
+onready var Lobby := $Lobby
 
 onready var Join := $MainMenu/MenuOptions/Join
 onready var Election := $MainMenu/MenuOptions/Election
@@ -29,8 +30,8 @@ func update_menu():
 	match current_menu:
 		MENUS.MAIN:
 			only_visible_menu(MainMenu)
-		MENUS.Lobby:
-			only_visible_menu(MainMenu)
+		MENUS.LOBBY:
+			only_visible_menu(Lobby)
 
 
 func only_visible_menu(Menu:Control):
