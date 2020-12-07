@@ -18,5 +18,5 @@ func _process(delta):
 	for i in $Players.get_children():
 		i.modulate = Color(1.0, 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0), 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0))
 		
-		if local_fighter != i and local_fighter.time_since_attack > 0:
+		if local_fighter != i and local_fighter.time_since_attack > 0 and local_fighter.position.distance_to(i.position) < 70:
 			Server.rpc_unreliable_id(1, "damage_player", Server.local_id, i.fighter_id, local_fighter.position, i.position, 0.1)
