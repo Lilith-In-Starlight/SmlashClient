@@ -35,6 +35,11 @@ var dead := false
 
 func _physics_process(delta):
 	if Server.local_id == fighter_id:
+		if Server.local_updated:
+			Server.local_updated = false
+			position = Server.player_data[Server.local_id]["position"]
+			speed = Server.player_data[Server.local_id]["speed"]
+			health = Server.player_data[Server.local_id]["health"]
 		if position.y > 1000 and not dead:
 			dead = true
 			Server.rset("deaths", Server.deaths + 1)
@@ -77,15 +82,15 @@ func _physics_process(delta):
 
 			if health == Server.player_data[fighter_id]["health"]:
 				if time_since_attack > 0:
-					speed = Vector2.ZERO
 					time_since_attack -= 1
 				if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
 					time_since_attack = 25
-					Server.rpc_id(1, "player_attacks", get_path(), 0.1, 64)
 				
 				speed = move_and_slide(speed, Vector2.UP)
 			else:
+				time_since_attack = 0
 				health = Server.player_data[fighter_id]["health"]
+			
 			
 			Server.rpc_unreliable_id(1, "update_player_server_pos", position, speed.length(), Server.local_id)
 	else:

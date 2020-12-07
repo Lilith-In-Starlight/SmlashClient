@@ -10,8 +10,12 @@ func _ready():
 		$Players.add_child(player)
 
 func _process(delta):
+	var local_fighter := get_node("Players/PLAYER_" + str(Server.local_id))
 	
 #	Server.rpc_unreliable("set_player_speed", j.get_path(), j.position, (j.position-(get_node(ik[0]).position) + Vector2.DOWN * 5).normalized()*(((Server.healths[j.fighter_id]/100.0)*3000) + 300))
 	
 	for i in $Players.get_children():
 		i.modulate = Color(1.0, 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0), 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0))
+		
+		if local_fighter != i and local_fighter.time_since_attack > 0:
+			Server.rpc_unreliable("damage_player", Server.local_id, i.fighter_id, local_fighter.position, i.position, 0.1)

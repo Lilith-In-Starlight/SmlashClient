@@ -20,6 +20,8 @@ var local_data := {
 	"cspeed" : 0.0,
 }
 
+var local_updated := false
+
 func join(ip):
 	host = false
 	var peer := NetworkedMultiplayerENet.new()
@@ -58,3 +60,8 @@ remote func go_to_stage():
 	
 remote func go_to_lobby():
 	get_tree().change_scene_to(MENU)
+
+remote func update_player_data_ingame(data, to):
+	player_data = data
+	if to == local_id:
+		local_updated = true
