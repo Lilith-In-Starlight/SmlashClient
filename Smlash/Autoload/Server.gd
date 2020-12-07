@@ -3,6 +3,7 @@ extends Node
 const STAGE := preload("res://Scenes/Lobby.tscn")
 
 remotesync var players := 0
+remotesync var deaths := 0
 
 var host := false
 var local_id := -1
