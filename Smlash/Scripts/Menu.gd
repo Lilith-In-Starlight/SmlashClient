@@ -6,7 +6,7 @@ onready var AllMenus := $"../"
 
 func _on_Join_pressed():
 	AllMenus.current_menu = AllMenus.MENUS.LOBBY
-	AllMenus.update()
+	AllMenus.update_menu()
 
 
 func _on_Meet_pressed():

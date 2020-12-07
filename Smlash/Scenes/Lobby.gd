@@ -1,24 +1,15 @@
 extends Node2D
 
-var lobby_started := false
-var game_started := false
-var ip := "127.0.0.1"
 
 func _ready():
-	pass
+	for i in Server.players:
+		var player = preload("res://Fighter.tscn").instance()
+		player.name = "PLAYER_" + str(i)
+		player.position.x = 300 + i * 80
+		player.fighter_id = i + 1
+		$Players.add_child(player)
 
 func _process(delta):
-	if not lobby_started:
-		if Input.is_key_pressed(KEY_C):
-			lobby_started = true
-
-	elif not game_started:
-		if Input.is_key_pressed(KEY_S):
-			for i in get_tree().get_network_connected_peers():
-				if i != 1 and i != get_tree().get_network_unique_id():
-					rpc_id(i, "setup")
-				setup()
-	else:
 #		if Server.host:
 #			for i in Server.attacks.keys():
 #				var ik = Server.attacks[i]
@@ -35,12 +26,3 @@ func _process(delta):
 
 		for i in $Players.get_children():
 			i.modulate = Color(1.0, 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0), 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0))
-
-remote func setup():
-	for i in Server.players:
-		var player = preload("res://Fighter.tscn").instance()
-		player.name = "PLAYER_" + str(i)
-		player.position.x = 300 + i * 80
-		player.fighter_id = i + 1
-		$Players.add_child(player)
-	game_started = true

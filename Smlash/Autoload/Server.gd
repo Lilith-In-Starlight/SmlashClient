@@ -1,7 +1,10 @@
 extends Node
 
-var host := false
+const STAGE := preload("res://Scenes/Lobby.tscn")
+
 remotesync var players := 0
+
+var host := false
 var local_id := -1
 var attacks := {}
 var attacks_ever := 0
@@ -47,3 +50,6 @@ remotesync func update_player_data_from_server(data):
 
 remote func update_player_data(data):
 	player_data = data
+
+remote func go_to_lobby():
+	get_tree().change_scene_to(STAGE)

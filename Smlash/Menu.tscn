@@ -7,11 +7,11 @@
 [ext_resource path="res://Scripts/AllMenus.gd" type="Script" id=5]
 [ext_resource path="res://Scripts/Lobby.gd" type="Script" id=6]
 
-[sub_resource type="DynamicFont" id=2]
+[sub_resource type="DynamicFont" id=1]
 size = 30
 font_data = ExtResource( 4 )
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="DynamicFont" id=2]
 size = 66
 font_data = ExtResource( 1 )
 
@@ -53,7 +53,7 @@ __meta__ = {
 margin_right = 345.0
 margin_bottom = 40.0
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 disabled = true
 text = "PLAY BRAWL"
 align = 2
@@ -63,7 +63,7 @@ margin_top = 44.0
 margin_right = 345.0
 margin_bottom = 84.0
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 disabled = true
 text = "MEET THE LEAGUE"
 align = 2
@@ -73,7 +73,7 @@ margin_top = 88.0
 margin_right = 345.0
 margin_bottom = 128.0
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "OPTIONS"
 align = 2
 
@@ -82,7 +82,7 @@ margin_top = 132.0
 margin_right = 345.0
 margin_bottom = 172.0
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 disabled = true
 text = "DECREES & BLESSINGS"
 align = 2
@@ -92,7 +92,7 @@ margin_top = 176.0
 margin_right = 345.0
 margin_bottom = 216.0
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 1 )
 text = "LEAVE"
 align = 2
 
@@ -105,7 +105,7 @@ margin_top = 20.0
 margin_right = 389.0
 margin_bottom = -255.0
 theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "THE SMLASH COMPETITION"
 align = 1
 valign = 1
@@ -118,43 +118,6 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 6 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MenuOptions" type="HSplitContainer" parent="Lobby"]
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = -785.0
-margin_top = -56.0
-margin_right = -16.0
-margin_bottom = -16.0
-dragger_visibility = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Start" type="Button" parent="Lobby/MenuOptions"]
-margin_right = 93.0
-margin_bottom = 40.0
-theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 2 )
-text = "START"
-align = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Back" type="Button" parent="Lobby/MenuOptions"]
-margin_left = 105.0
-margin_right = 769.0
-margin_bottom = 40.0
-theme = ExtResource( 2 )
-custom_fonts/font = SubResource( 2 )
-text = "BACK"
-align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -204,8 +167,36 @@ theme = ExtResource( 2 )
 custom_fonts/font = SubResource( 3 )
 text = "PLAYER 4"
 
+[node name="Start" type="Button" parent="Lobby"]
+margin_left = 15.0
+margin_top = 394.0
+margin_right = 108.0
+margin_bottom = 434.0
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 1 )
+text = "START"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Button" parent="Lobby"]
+margin_left = 120.0
+margin_top = 394.0
+margin_right = 784.0
+margin_bottom = 434.0
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 1 )
+text = "BACK"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [connection signal="pressed" from="MainMenu/MenuOptions/Join" to="MainMenu" method="_on_Join_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/Meet" to="MainMenu" method="_on_Meet_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/Options" to="MainMenu" method="_on_Options_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/Election" to="MainMenu" method="_on_Election_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/Leave" to="MainMenu" method="_on_Leave_pressed"]
+[connection signal="pressed" from="Lobby/Start" to="Lobby" method="_on_Start_pressed"]
+[connection signal="pressed" from="Lobby/Back" to="Lobby" method="_on_Back_pressed"]

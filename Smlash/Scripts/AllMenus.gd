@@ -25,7 +25,7 @@ func _ready():
 	get_tree().connect("server_disconnected", self, "on_server_disconnected")
 
 
-func _update_menu():
+func update_menu():
 	match current_menu:
 		MENUS.MAIN:
 			only_visible_menu(MainMenu)
