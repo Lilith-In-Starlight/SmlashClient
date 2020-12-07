@@ -20,10 +20,14 @@ var current_menu = MENUS.MAIN
 
 
 func _ready():
-	Server.join("127.0.0.1")
 	get_tree().connect("connected_to_server", self, "on_connected_ok")
 	get_tree().connect("connection_failed", self, "on_connected_fail")
 	get_tree().connect("server_disconnected", self, "on_server_disconnected")
+	
+	if Server.working:
+		Join.disabled = false
+		Election.disabled = false
+		Meet.disabled = false
 
 
 func update_menu():
@@ -37,7 +41,6 @@ func update_menu():
 func only_visible_menu(Menu:Control):
 	for i in get_children():
 		i.visible = (i == Menu)
-
 
 func on_connected_ok():
 	Join.disabled = false

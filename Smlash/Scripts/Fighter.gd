@@ -30,6 +30,9 @@ var time_since_attack := 0
 var go_to := Vector2(0, 0)
 var go_at := 0
 
+var time_damaged := 0
+
+var stocks := 3
 var dead := false
 
 
@@ -38,12 +41,16 @@ func _physics_process(delta):
 		if Server.local_updated:
 			Server.local_updated = false
 			position = Server.player_data[Server.local_id]["position"]
-			speed = Server.player_data[Server.local_id]["speed"]
-			health = Server.player_data[Server.local_id]["health"]
-		if position.y > 1000 and not dead:
+			speed = Server.player_data[Server.local_id]["vspeed"]
+		if position.y > 1000 and stocks > 0:
+			stocks -= 1
+			position.y = -70
+			position.x = 175 + ((fighter_id-1)*(450/(Server.players-1)))
+			Server.rpc_id(1, "update_player_health", Server.local_id, 0.0)
+		if stocks <= 0 and not dead:
 			dead = true
 			Server.rset("deaths", Server.deaths + 1)
-		if not Server.deaths == Server.players - 1 and not dead:
+		if not Server.deaths == Server.players - 1 and stocks > 0:
 			match state:
 				STATES.ON_AIR:
 					speed.y = move_toward(speed.y, MAXYS, GRAV)
@@ -81,14 +88,18 @@ func _physics_process(delta):
 			
 			
 			if health == Server.player_data[fighter_id]["health"]:
-				if time_since_attack > 0:
-					time_since_attack -= 1
-				if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
-					time_since_attack = 25
-				
-				speed = move_and_slide(speed, Vector2.UP)
+				if time_damaged <= 0:
+					if time_since_attack > 0:
+						time_since_attack -= 1
+					if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
+						time_since_attack = 8
+					
+					speed = move_and_slide(speed, Vector2.UP)
+				else:
+					time_damaged -= 1
 			else:
 				time_since_attack = 0
+				time_damaged = 2
 				health = Server.player_data[fighter_id]["health"]
 			
 			

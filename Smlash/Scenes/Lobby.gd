@@ -6,7 +6,9 @@ func _ready():
 		var player = preload("res://Fighter.tscn").instance()
 		player.name = "PLAYER_" + str(i)
 		print(player.name)
-		player.position.x = 300 + i * 80
+		print(Server.local_id)
+		player.position.x = 175 + ((i-1)*(450/(Server.players-1)))
+		player.position.y = -80
 		player.fighter_id = i
 		$Players.add_child(player)
 

@@ -6,7 +6,7 @@ const MENU := preload("res://Menu.tscn")
 remotesync var players := 0
 remotesync var deaths := 0
 
-var host := false
+var working := false
 var local_id := -1
 var attacks := {}
 var attacks_ever := 0
@@ -17,13 +17,16 @@ var player_data := {
 var local_data := {
 	"health" : 0.0,
 	"position" : Vector2(0, 0),
+	"vspeed" : Vector2(0, 0),
 	"cspeed" : 0.0,
 }
 
 var local_updated := false
 
+func _ready():
+	Server.join("127.0.0.1")
+
 func join(ip):
-	host = false
 	var peer := NetworkedMultiplayerENet.new()
 	peer.create_client(ip, 5555)
 	get_tree().network_peer = peer
@@ -35,6 +38,7 @@ func join(ip):
 # Cllient functions
 func on_connected_ok():
 	rpc_id(1, "register_player", local_data)
+	working = true
 	print("Conncted")
 
 func on_server_disconnected():
