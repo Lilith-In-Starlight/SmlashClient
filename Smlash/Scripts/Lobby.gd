@@ -9,7 +9,7 @@ func _process(delta):
 	for i in range(1, 5):
 		get_node("Players/Player" + str(i)).visible = (i <= Server.players)
 		
-	Start.disabled = (Server.local_id != 1 and Server.players > 1)
+	Start.disabled = (Server.local_id != 1 or Server.players == 1)
 
 
 func _on_Back_pressed():
