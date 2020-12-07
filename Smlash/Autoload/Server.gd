@@ -1,6 +1,7 @@
 extends Node
 
 const STAGE := preload("res://Scenes/Lobby.tscn")
+const MENU := preload("res://Menu.tscn")
 
 remotesync var players := 0
 remotesync var deaths := 0
@@ -52,5 +53,8 @@ remotesync func update_player_data_from_server(data):
 remote func update_player_data(data):
 	player_data = data
 
-remote func go_to_lobby():
+remote func go_to_stage():
 	get_tree().change_scene_to(STAGE)
+	
+remote func go_to_lobby():
+	get_tree().change_scene_to(MENU)
