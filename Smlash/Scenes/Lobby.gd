@@ -10,9 +10,8 @@ func _ready():
 func _process(delta):
 	if not lobby_started:
 		if Input.is_key_pressed(KEY_C):
-			Server.join(ip)
 			lobby_started = true
-			
+
 	elif not game_started:
 		if Input.is_key_pressed(KEY_S):
 			for i in get_tree().get_network_connected_peers():
@@ -33,7 +32,7 @@ func _process(delta):
 #							Server.healths[j.fighter_id] += ik[1]
 #							Server.rset_unreliable("healths", Server.healths)
 #							Server.rpc_unreliable("set_player_speed", j.get_path(), j.position, (j.position-(get_node(ik[0]).position) + Vector2.DOWN * 5).normalized()*(((Server.healths[j.fighter_id]/100.0)*3000) + 300))
-		
+
 		for i in $Players.get_children():
 			i.modulate = Color(1.0, 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0), 1.0 - (Server.player_data[i.fighter_id]["health"]/100.0))
 
