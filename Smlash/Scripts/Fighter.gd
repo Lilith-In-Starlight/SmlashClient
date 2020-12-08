@@ -37,6 +37,7 @@ var dead := false
 
 
 func _physics_process(delta):
+	$Polygon2D2.visible = (Server.local_id == fighter_id)
 	if Server.local_id == fighter_id:
 		if Server.local_updated:
 			Server.local_updated = false
