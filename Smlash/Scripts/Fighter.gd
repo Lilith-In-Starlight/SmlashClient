@@ -44,6 +44,7 @@ var stocks := 3
 var dead := false
 
 var anim_state = ANIM_STATES.AIR
+var time_since_hit := 0.0
 
 func _physics_process(delta):
 	$Polygon2D2.visible = (Server.local_id == fighter_id)
@@ -98,7 +99,7 @@ func _physics_process(delta):
 			
 			
 			if health == Server.player_data[fighter_id]["health"]:
-				if time_damaged <= 0:
+				if time_damaged < 0:
 					if time_since_attack > 0:
 						time_since_attack -= 1
 					if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
@@ -121,15 +122,28 @@ func _physics_process(delta):
 			position = position.move_toward(go_to, go_at*delta)
 		else:
 			position += (go_to - position) / 2
-			
+	
+	if time_damaged > 0:
+		time_since_hit = abs((speed.length() + go_at) / 200)
+		
+	if time_since_hit > 10:
+		time_since_hit = 10
+	
+
 	if FloorDetector.is_colliding():
 		anim_state = ANIM_STATES.GROUND
 	else:
 		anim_state = ANIM_STATES.AIR
 	
-	match anim_state:
-		ANIM_STATES.GROUND:
-			if (Server.local_id == fighter_id and speed.length() > 1) or go_at > 1:
-				Animations.current_anim = Animations.ANIMS.running
-			else:
-				Animations.current_anim = Animations.ANIMS.idle
+	if time_since_hit < 0:
+		match anim_state:
+			ANIM_STATES.GROUND:
+				if (Server.local_id == fighter_id and speed.length() > 1) or go_at > 1:
+					Animations.current_anim = Animations.ANIMS.running
+				else:
+					Animations.current_anim = Animations.ANIMS.idle
+	else:
+		time_since_hit -= 1
+		if Animations.current_anim != Animations.ANIMS.nothing:
+			Animations.current_anim = Animations.ANIMS.nothing
+			Animations.last_pos = position

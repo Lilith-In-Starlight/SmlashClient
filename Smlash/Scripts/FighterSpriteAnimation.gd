@@ -5,6 +5,7 @@ enum ANIMS {
 	running,
 	jumping,
 	falling,
+	nothing,
 }
 
 
@@ -24,6 +25,8 @@ var pastuff := false
 
 var blink_time := 0
 var time_blink := 50
+var last_pos := Vector2(0, 0)
+
 
 func _process(delta):
 	if blink_time > time_blink:
@@ -105,7 +108,12 @@ func _process(delta):
 				
 				FrontArm.go_to = FrontArm.go_to.move_toward(Vector2(8, 0) - position, speedness/4)
 				BackArm.go_to = BackArm.go_to.move_toward(Vector2(-6, -4) - position, speedness/4)
-			
+		ANIMS.nothing:
+			BackLeg.go_to += last_pos - get_parent().position
+			BackArm.go_to += last_pos - get_parent().position
+			FrontLeg.go_to += last_pos - get_parent().position
+			FrontArm.go_to += last_pos - get_parent().position
+			last_pos = get_parent().position
 	FrontFoot.position += ((FrontLeg.go_to + position) - FrontFoot.position) / 2
 	BackFoot.position += ((BackLeg.go_to + position) - BackFoot.position) / 2
 
