@@ -4,10 +4,10 @@ extends AnimatedSprite
 var go_to := Vector2(0, 0)
 
 func _process(delta):
-	var go_angle := global_position.angle_to_point(go_to) + PI/2
-	rotation += (go_angle - rotation)
+	var go_angle := global_position.angle_to_point(go_to + get_parent().get_parent().position) + PI/2
+	rotation += (go_angle - rotation) / 3
 	
-	var go_dist := global_position.distance_to(go_to)
+	var go_dist := global_position.distance_to(go_to + get_parent().get_parent().position)
 	
 	# TODO: I hate this way to do this. If I don't fix this in the future 
 	# that means something went awfully wrong with my life

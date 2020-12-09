@@ -6,15 +6,23 @@ enum STATES {
 	ON_GROUND
 }
 
+enum ANIM_STATES {
+	GROUND,
+	AIR
+}
+
 const MAXYS := 800
-const WALKX := 400
-const AIRX := 500
-const ACC := 50
-const AACC := 60
+const WALKX := 500
+const AIRX := 600
+const ACC := 70
+const AACC := 80
 const GRAV := 70
 const FRIC := 50
 const AFRIC := 70
 const JUMP := -800
+
+onready var FloorDetector := $FloorDetector
+onready var Animations := $Sprite
 
 var health := 0.0
 var fighter_id := 0
@@ -35,6 +43,7 @@ var time_damaged := 0
 var stocks := 3
 var dead := false
 
+var anim_state = ANIM_STATES.AIR
 
 func _physics_process(delta):
 	$Polygon2D2.visible = (Server.local_id == fighter_id)
@@ -112,3 +121,15 @@ func _physics_process(delta):
 			position = position.move_toward(go_to, go_at*delta)
 		else:
 			position += (go_to - position) / 2
+			
+	if FloorDetector.is_colliding():
+		anim_state = ANIM_STATES.GROUND
+	else:
+		anim_state = ANIM_STATES.AIR
+	
+	match anim_state:
+		ANIM_STATES.GROUND:
+			if (Server.local_id == fighter_id and speed.length() > 1) or go_at > 1:
+				Animations.current_anim = Animations.ANIMS.running
+			else:
+				Animations.current_anim = Animations.ANIMS.idle

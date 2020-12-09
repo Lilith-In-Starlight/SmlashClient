@@ -20,22 +20,39 @@ onready var BackArm := $BackArm
 var current_anim = ANIMS.idle
 
 var time := 0.0
+var pastuff := false
+
+var blink_time := 0
+var time_blink := 50
 
 func _process(delta):
+	if blink_time > time_blink:
+		Head.play("default")
+		time_blink = 300 + randi() % 360
+		print("hm?")
+		blink_time = 0
+	blink_time += 1
 	time += 1
-	if Input.is_key_pressed(KEY_RIGHT):
-		current_anim = ANIMS.running
-	else:
-		current_anim = ANIMS.idle
+#	if Input.is_key_pressed(KEY_RIGHT):
+#		current_anim = ANIMS.running
+#		if !pastuff:
+#			time = 0.0
+#			pastuff = true
+#	else:
+#		current_anim = ANIMS.idle
+#		pastuff = false
 	
 	Head.global_position = Body.global_position + Vector2(cos(Body.rotation), sin(Body.rotation)).rotated(PI/2 * 3) * 22 + Vector2(3, 0)
-	
+	FrontArm.global_position = Body.global_position + Vector2(cos(Body.rotation - 0.02), sin(Body.rotation)).rotated(PI/2 * 3) * 18
+	BackArm.global_position = Body.global_position + Vector2(cos(Body.rotation + 0.02), sin(Body.rotation)).rotated(PI/2 * 3) * 18
 	match current_anim:
 		ANIMS.idle:
-			FrontLeg.go_to = get_parent().global_position + Vector2(-10, 30) - position
-			BackLeg.go_to = get_parent().global_position + Vector2(10, 30) - position
-			FrontArm.go_to = get_parent().global_position + Vector2(-3, 5) - position
-			BackArm.go_to = get_parent().global_position + Vector2(12, -4) - position
+			FrontFoot.rotation = move_toward(FrontFoot.rotation, 0, 0.1)
+			BackFoot.rotation = move_toward(BackFoot.rotation, 0, 0.1)
+			FrontLeg.go_to = Vector2(-10, 30) - position
+			BackLeg.go_to = Vector2(10, 30) - position
+			FrontArm.go_to = Vector2(-3 + ((sin(time * 0.1) *1) - position.y)/2, 5 - ((sin(time * 0.1) *1) - position.y)/2) - position
+			BackArm.go_to = Vector2(12 + ((sin(time * 0.1) *1) - position.y)/2, -4 - ((sin(time * 0.1) *1) - position.y)/2) - position
 			
 			position.y += (abs(sin(time * 0.1) * 2) - position.y)/2
 			position.x += (abs(sin(time * 0.1) * 2) - position.y)/2
@@ -48,6 +65,8 @@ func _process(delta):
 				FrontLeg.position.x = move_toward(FrontLeg.position.x, 2, 2)
 				BackLeg.position.x = move_toward(BackLeg.position.x, 0, 2)
 		ANIMS.running:
+			FrontFoot.rotation = FrontLeg.rotation
+			BackFoot.rotation = BackLeg.rotation
 			position.x += (0 - position.x)/2
 			var running_slowness := 0.09
 			var slowness_running := 1/running_slowness
@@ -61,23 +80,35 @@ func _process(delta):
 			if fmod(time, PI*slowness_running) < PI*(slowness_running/4):
 				FrontLeg.position.x = move_toward(FrontLeg.position.x, 0, 2)
 				BackLeg.position.x = move_toward(BackLeg.position.x, 0, 2)
-				BackLeg.go_to = BackLeg.go_to.move_toward(get_parent().global_position + Vector2(0, 30) - Vector2.UP - position, speedness)
-				FrontLeg.go_to = FrontLeg.go_to.move_toward(get_parent().global_position + Vector2(0, 25) - Vector2.UP - position, speedness)
+				BackLeg.go_to = BackLeg.go_to.move_toward(Vector2(0, 30) - Vector2.UP - position, speedness)
+				FrontLeg.go_to = FrontLeg.go_to.move_toward(Vector2(0, 25) - Vector2.UP - position, speedness)
+				
 			elif fmod(time, PI*slowness_running) < PI*(slowness_running/4)*2:
 				FrontLeg.position.x = move_toward(FrontLeg.position.x, 5, 2)
 				BackLeg.position.x = move_toward(BackLeg.position.x, -3, 2)
-				BackLeg.go_to = BackLeg.go_to.move_toward(get_parent().global_position + Vector2(-25, 20) - Vector2.UP - position, speedness2)
-				FrontLeg.go_to = FrontLeg.go_to.move_toward(get_parent().global_position + Vector2(25, 20) - Vector2.UP - position, speedness2)
+				BackLeg.go_to = BackLeg.go_to.move_toward(Vector2(-25, 20) - Vector2.UP - position, speedness2)
+				FrontLeg.go_to = FrontLeg.go_to.move_toward(Vector2(25, 20) - Vector2.UP - position, speedness2)
+				
+				FrontArm.go_to = FrontArm.go_to.move_toward(Vector2(-5, -3) - position, speedness/4)
+				BackArm.go_to = BackArm.go_to.move_toward(Vector2(12, -4) - position, speedness/4)
 			elif fmod(time, PI*slowness_running) < PI*(slowness_running/4)*3:
 				FrontLeg.position.x = move_toward(FrontLeg.position.x, 0, 2)
 				BackLeg.position.x = move_toward(BackLeg.position.x, 0, 2)
-				BackLeg.go_to = BackLeg.go_to.move_toward(get_parent().global_position + Vector2(0, 25) - Vector2.UP - position, speedness)
-				FrontLeg.go_to = FrontLeg.go_to.move_toward(get_parent().global_position + Vector2(0, 30) - Vector2.UP - position, speedness)
+				BackLeg.go_to = BackLeg.go_to.move_toward(Vector2(0, 25) - Vector2.UP - position, speedness)
+				FrontLeg.go_to = FrontLeg.go_to.move_toward(Vector2(0, 30) - Vector2.UP - position, speedness)
+				
 			else:
 				FrontLeg.position.x = move_toward(FrontLeg.position.x, -3, 2)
 				BackLeg.position.x = move_toward(BackLeg.position.x, 5, 2)
-				BackLeg.go_to = BackLeg.go_to.move_toward(get_parent().global_position + Vector2(25, 20) - Vector2.UP - position, speedness2)
-				FrontLeg.go_to = FrontLeg.go_to.move_toward(get_parent().global_position + Vector2(-25, 20) - Vector2.UP - position, speedness2)
+				BackLeg.go_to = BackLeg.go_to.move_toward(Vector2(25, 20) - Vector2.UP - position, speedness2)
+				FrontLeg.go_to = FrontLeg.go_to.move_toward(Vector2(-25, 20) - Vector2.UP - position, speedness2)
+				
+				FrontArm.go_to = FrontArm.go_to.move_toward(Vector2(8, 0) - position, speedness/4)
+				BackArm.go_to = BackArm.go_to.move_toward(Vector2(-6, -4) - position, speedness/4)
 			
-	FrontFoot.global_position += ((FrontLeg.go_to + position) - FrontFoot.global_position) / 2
-	BackFoot.global_position += ((BackLeg.go_to + position) - BackFoot.global_position) / 2
+	FrontFoot.position += ((FrontLeg.go_to + position) - FrontFoot.position) / 2
+	BackFoot.position += ((BackLeg.go_to + position) - BackFoot.position) / 2
+
+
+func _on_Head_animation_finished():
+	Head.frame = 0
