@@ -8,9 +8,9 @@ func _process(delta):
 	rotation += (go_angle - rotation) / 3
 	
 	var go_dist := global_position.distance_to(go_to + get_parent().get_parent().position)
-	if go_dist > 40:
-		go_to = go_to.normalized() * 40
-		go_dist = 40
+	if go_dist > 20:
+		go_to = go_to.normalized() * 20
+		go_dist = 20
 	
 	# TODO: I hate this way to do this. If I don't fix this in the future 
 	# that means something went awfully wrong with my life

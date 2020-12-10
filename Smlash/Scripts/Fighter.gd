@@ -125,6 +125,7 @@ func _physics_process(delta):
 	
 	if time_damaged > 0:
 		time_since_hit = abs((speed.length() + go_at) / 200)
+		print(speed.length())
 		
 	if time_since_hit > 10:
 		time_since_hit = 10

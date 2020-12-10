@@ -50,8 +50,8 @@ func _process(delta):
 	BackArm.global_position = Body.global_position + Vector2(cos(Body.rotation + 0.02), sin(Body.rotation)).rotated(PI/2 * 3) * 18
 	match current_anim:
 		ANIMS.idle:
-			FrontFoot.rotation = move_toward(FrontFoot.rotation, 0, 0.1)
-			BackFoot.rotation = move_toward(BackFoot.rotation, 0, 0.1)
+			FrontFoot.rotation = move_toward(FrontFoot.rotation, 0, 0.5)
+			BackFoot.rotation = move_toward(BackFoot.rotation, 0, 0.5)
 			FrontLeg.go_to = Vector2(-10, 30) - position
 			BackLeg.go_to = Vector2(10, 30) - position
 			FrontArm.go_to = Vector2(-3 + ((sin(time * 0.1) *1) - position.y)/2, 5 - ((sin(time * 0.1) *1) - position.y)/2) - position
@@ -60,7 +60,7 @@ func _process(delta):
 			position.y += (abs(sin(time * 0.1) * 2) - position.y)/2
 			position.x += (abs(sin(time * 0.1) * 2) - position.y)/2
 			Head.rotation = -sin(time * 0.2) * 0.05
-			Body.rotation = move_toward(Body.rotation, 0, 0.01)
+			Body.rotation = move_toward(Body.rotation, 0, 0.1)
 			if FrontLeg.position.x < 0:
 				FrontLeg.position.x = move_toward(FrontLeg.position.x, -4, 2)
 				BackLeg.position.x = move_toward(BackLeg.position.x, 6, 2)
@@ -113,10 +113,12 @@ func _process(delta):
 			BackArm.go_to += last_pos - get_parent().position
 			FrontLeg.go_to += last_pos - get_parent().position
 			FrontArm.go_to += last_pos - get_parent().position
-			Body.rotation = move_toward(Body.rotation, last_pos.angle(), 0.1)
+			FrontFoot.rotation = FrontLeg.rotation
+			BackFoot.rotation = BackLeg.rotation
+			Body.rotation = move_toward(Body.rotation, (last_pos - get_parent().position).angle() - PI/2, 0.01)
 			last_pos = get_parent().position
-	FrontFoot.position += ((FrontLeg.go_to + position) - FrontFoot.position) / 2
-	BackFoot.position += ((BackLeg.go_to + position) - BackFoot.position) / 2
+	FrontFoot.position += ((FrontLeg.go_to + position) - FrontFoot.position)
+	BackFoot.position += ((BackLeg.go_to + position) - BackFoot.position)
 
 
 func _on_Head_animation_finished():
