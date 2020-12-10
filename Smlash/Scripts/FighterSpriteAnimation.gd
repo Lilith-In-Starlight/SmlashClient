@@ -113,6 +113,7 @@ func _process(delta):
 			BackArm.go_to += last_pos - get_parent().position
 			FrontLeg.go_to += last_pos - get_parent().position
 			FrontArm.go_to += last_pos - get_parent().position
+			Body.rotation = move_toward(Body.rotation, last_pos.angle(), 0.1)
 			last_pos = get_parent().position
 	FrontFoot.position += ((FrontLeg.go_to + position) - FrontFoot.position) / 2
 	BackFoot.position += ((BackLeg.go_to + position) - BackFoot.position) / 2
