@@ -42,6 +42,7 @@ func only_visible_menu(Menu:Control):
 	for i in get_children():
 		i.visible = (i == Menu)
 
+
 func on_connected_ok():
 	Join.disabled = false
 	Election.disabled = false
@@ -52,8 +53,8 @@ func on_server_disconnected():
 	get_tree().disconnect("connected_to_server", self, "on_connected_ok")
 	get_tree().disconnect("connection_failed", self, "on_connected_fail")
 	get_tree().disconnect("server_disconnected", self, "on_server_disconnected")
-	
-	
+
+
 func on_connected_fail():
 	get_tree().disconnect("connected_to_server", self, "on_connected_ok")
 	get_tree().disconnect("connection_failed", self, "on_connected_fail")
