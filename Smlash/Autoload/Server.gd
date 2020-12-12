@@ -1,5 +1,7 @@
 extends Node
 
+signal player_attacked
+
 const STAGE := preload("res://Scenes/Lobby.tscn")
 const MENU := preload("res://Menu.tscn")
 
@@ -24,7 +26,7 @@ var local_data := {
 var local_updated := false
 
 func _ready():
-	Server.join("127.0.0.1")
+	Server.join("fdfd::1af4:a824")
 
 func join(ip):
 	var peer := NetworkedMultiplayerENet.new()
@@ -69,3 +71,6 @@ remote func update_player_data_ingame(data, to):
 	player_data = data
 	if to == local_id:
 		local_updated = true
+
+remote func player_was_attacked(from, to, posfrom, posto, damage):
+	emit_signal("player_attacked", from, to, posfrom, posto, damage)

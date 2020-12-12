@@ -6,6 +6,7 @@ enum ANIMS {
 	jumping,
 	falling,
 	nothing,
+	nlight,
 }
 
 
@@ -76,7 +77,7 @@ func _process(delta):
 			var speedness := 5
 			var speedness2 := 5
 			
-			Body.rotation = move_toward(Body.rotation, 0.15, 0.01)
+			Body.rotation = move_toward(Body.rotation, 0.15, 0.12)
 			Head.rotation = sin(time * 0.3) * 0.05
 			
 			position.y += ((sin(time * running_slowness * 4) * 5) - position.y)/8
@@ -92,8 +93,8 @@ func _process(delta):
 				BackLeg.go_to = BackLeg.go_to.move_toward(Vector2(-25, 20) - Vector2.UP - position, speedness2)
 				FrontLeg.go_to = FrontLeg.go_to.move_toward(Vector2(25, 20) - Vector2.UP - position, speedness2)
 				
-				FrontArm.go_to = FrontArm.go_to.move_toward(Vector2(-5, -3) - position, speedness/4)
-				BackArm.go_to = BackArm.go_to.move_toward(Vector2(12, -4) - position, speedness/4)
+				FrontArm.go_to = FrontArm.go_to.move_toward(Vector2(-5, -3) - position, speedness/2)
+				BackArm.go_to = BackArm.go_to.move_toward(Vector2(12, -4) - position, speedness/2)
 			elif fmod(time, PI*slowness_running) < PI*(slowness_running/4)*3:
 				FrontLeg.position.x = move_toward(FrontLeg.position.x, 0, 2)
 				BackLeg.position.x = move_toward(BackLeg.position.x, 0, 2)
@@ -106,8 +107,8 @@ func _process(delta):
 				BackLeg.go_to = BackLeg.go_to.move_toward(Vector2(25, 20) - Vector2.UP - position, speedness2)
 				FrontLeg.go_to = FrontLeg.go_to.move_toward(Vector2(-25, 20) - Vector2.UP - position, speedness2)
 				
-				FrontArm.go_to = FrontArm.go_to.move_toward(Vector2(8, 0) - position, speedness/4)
-				BackArm.go_to = BackArm.go_to.move_toward(Vector2(-6, -4) - position, speedness/4)
+				FrontArm.go_to = FrontArm.go_to.move_toward(Vector2(10, -2) - position, speedness/2)
+				BackArm.go_to = BackArm.go_to.move_toward(Vector2(-6, -4) - position, speedness/2)
 		ANIMS.nothing:
 			BackLeg.go_to += last_pos - get_parent().position
 			BackArm.go_to += last_pos - get_parent().position
@@ -117,8 +118,18 @@ func _process(delta):
 			BackFoot.rotation = BackLeg.rotation
 			Body.rotation = move_toward(Body.rotation, (last_pos - get_parent().position).angle() - PI/2, 0.01)
 			last_pos = get_parent().position
-	FrontFoot.position += ((FrontLeg.go_to + position) - FrontFoot.position)
-	BackFoot.position += ((BackLeg.go_to + position) - BackFoot.position)
+			
+		ANIMS.nlight:
+			# i really have to fix this but im laaazy
+			Body.rotation = move_toward(Body.rotation, -1, 0.5)
+			FrontLeg.position.x = move_toward(FrontLeg.position.x, 0, 5)
+			BackLeg.position.x = move_toward(FrontLeg.position.x, 0, 5)
+			FrontLeg.go_to = Vector2(-10, 30) - position
+			BackArm.go_to = BackArm.go_to.move_toward(Vector2(-10,10) - position, 10)
+			BackLeg.go_to = BackLeg.go_to.move_toward(Vector2(10, -10) - Vector2.UP - position, 10)
+		
+	FrontFoot.position += ((FrontLeg.go_to + position) - FrontFoot.position) - position
+	BackFoot.position += ((BackLeg.go_to + position) - BackFoot.position) - position
 
 
 func _on_Head_animation_finished():

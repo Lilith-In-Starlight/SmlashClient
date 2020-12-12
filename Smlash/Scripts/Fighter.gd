@@ -12,8 +12,8 @@ enum ANIM_STATES {
 }
 
 const MAXYS := 800
-const WALKX := 500
-const AIRX := 600
+const WALKX := 400
+const AIRX := 500
 const ACC := 70
 const AACC := 80
 const GRAV := 70
@@ -46,13 +46,14 @@ var dead := false
 var anim_state = ANIM_STATES.AIR
 var time_since_hit := 0.0
 
+
+func _ready():
+	Server.connect("player_attacked", self, "bruh_was_attacked")
+
 func _physics_process(delta):
 	$Polygon2D2.visible = (Server.local_id == fighter_id)
 	if Server.local_id == fighter_id:
-		if Server.local_updated:
-			Server.local_updated = false
-			position = Server.player_data[Server.local_id]["position"]
-			speed = Server.player_data[Server.local_id]["vspeed"]
+		
 		if position.y > 1000 and stocks > 0:
 			stocks -= 1
 			position.y = -70
@@ -97,24 +98,28 @@ func _physics_process(delta):
 			
 			holding_up = Input.is_key_pressed(KEY_UP)
 			
-			
-			if health == Server.player_data[fighter_id]["health"]:
-				if time_damaged < 0:
-					if time_since_attack > 0:
-						time_since_attack -= 1
-					if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
-						time_since_attack = 8
-					
-					speed = move_and_slide(speed, Vector2.UP)
+			# what the fuck was i thinking here
+			# is this really how bad i am
+			# was i drunk
+			# my code needs jesus
+			if time_damaged < 0:
+				if time_since_attack > 0:
+					time_since_attack -= 1
+				if Input.is_key_pressed(KEY_C) and time_since_attack <= 0:
+					time_since_attack = 2
+				
 				else:
-					time_damaged -= 1
+					speed = move_and_slide(speed, Vector2.UP)
 			else:
-				time_since_attack = 0
-				time_damaged = 2
-				health = Server.player_data[fighter_id]["health"]
+				time_damaged -= 1
 			
+			# TODO: put this somewhere more general
+			health = Server.player_data[fighter_id]["health"]
 			
+			# TODO: uhhhhh
 			Server.rpc_unreliable_id(1, "update_player_server_pos", position, speed.length(), Server.local_id)
+			
+			# TODO: comment this shit. what the fuck ash. what the fuck.
 	else:
 		go_to = Server.player_data[fighter_id]["position"]
 		go_at = Server.player_data[fighter_id]["cspeed"]
@@ -122,29 +127,39 @@ func _physics_process(delta):
 			position = position.move_toward(go_to, go_at*delta)
 		else:
 			position += (go_to - position) / 2
-	
+		
+	# UHHHHHHHHHHHHHHHHHH?
 	if time_damaged > 0:
 		time_since_hit = abs((speed.length() + go_at) / 200)
-		print(speed.length())
 		
 	if time_since_hit > 10:
 		time_since_hit = 10
 	
-
+	# Animations
 	if FloorDetector.is_colliding():
 		anim_state = ANIM_STATES.GROUND
 	else:
 		anim_state = ANIM_STATES.AIR
 	
-	if time_since_hit < 0:
-		match anim_state:
-			ANIM_STATES.GROUND:
-				if (Server.local_id == fighter_id and speed.length() > 1) or go_at > 1:
-					Animations.current_anim = Animations.ANIMS.running
-				else:
-					Animations.current_anim = Animations.ANIMS.idle
+	if (Input.is_key_pressed(KEY_C) or time_since_attack > 0) and fighter_id == Server.local_id:
+		Animations.current_anim = Animations.ANIMS.nlight
 	else:
-		time_since_hit -= 1
-		if Animations.current_anim != Animations.ANIMS.nothing:
-			Animations.current_anim = Animations.ANIMS.nothing
-			Animations.last_pos = position
+		if time_since_hit < 0:
+			match anim_state:
+				ANIM_STATES.GROUND:
+					if (Server.local_id == fighter_id and speed.length() > 1) or go_at > 1:
+						Animations.current_anim = Animations.ANIMS.running
+					else:
+						Animations.current_anim = Animations.ANIMS.idle
+		else:
+			time_since_hit -= 1
+			if Animations.current_anim != Animations.ANIMS.nothing:
+				Animations.current_anim = Animations.ANIMS.nothing
+				Animations.last_pos = position
+
+
+func bruh_was_attacked(from, to, posfrom, posto, damage):
+	if fighter_id == to:
+		time_since_hit = 10
+		speed = (posto-(posfrom + Vector2.DOWN * 5)).normalized()*(((health/100.0)*3000) + 800 + (damage * 25))
+		position = posto
