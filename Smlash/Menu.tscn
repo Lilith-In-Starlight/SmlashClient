@@ -8,7 +8,7 @@
 [ext_resource path="res://Scripts/Lobby.gd" type="Script" id=6]
 
 [sub_resource type="DynamicFont" id=1]
-size = 30
+size = 25
 font_data = ExtResource( 4 )
 
 [sub_resource type="DynamicFont" id=2]
@@ -50,17 +50,27 @@ __meta__ = {
 
 [node name="Join" type="Button" parent="MainMenu/MenuOptions"]
 margin_right = 345.0
-margin_bottom = 40.0
+margin_bottom = 33.0
 theme = ExtResource( 2 )
 custom_fonts/font = SubResource( 1 )
 disabled = true
-text = "PLAY BRAWL"
+text = "JOIN LOBBY"
+align = 2
+
+[node name="Host" type="Button" parent="MainMenu/MenuOptions"]
+margin_top = 37.0
+margin_right = 345.0
+margin_bottom = 70.0
+theme = ExtResource( 2 )
+custom_fonts/font = SubResource( 1 )
+disabled = true
+text = "HOST LOBBY"
 align = 2
 
 [node name="Meet" type="Button" parent="MainMenu/MenuOptions"]
-margin_top = 44.0
+margin_top = 74.0
 margin_right = 345.0
-margin_bottom = 84.0
+margin_bottom = 107.0
 theme = ExtResource( 2 )
 custom_fonts/font = SubResource( 1 )
 disabled = true
@@ -68,18 +78,18 @@ text = "MEET THE LEAGUE"
 align = 2
 
 [node name="Options" type="Button" parent="MainMenu/MenuOptions"]
-margin_top = 88.0
+margin_top = 111.0
 margin_right = 345.0
-margin_bottom = 128.0
+margin_bottom = 144.0
 theme = ExtResource( 2 )
 custom_fonts/font = SubResource( 1 )
 text = "OPTIONS"
 align = 2
 
 [node name="Election" type="Button" parent="MainMenu/MenuOptions"]
-margin_top = 132.0
+margin_top = 148.0
 margin_right = 345.0
-margin_bottom = 172.0
+margin_bottom = 181.0
 theme = ExtResource( 2 )
 custom_fonts/font = SubResource( 1 )
 disabled = true
@@ -87,9 +97,9 @@ text = "DECREES & BLESSINGS"
 align = 2
 
 [node name="Leave" type="Button" parent="MainMenu/MenuOptions"]
-margin_top = 176.0
+margin_top = 185.0
 margin_right = 345.0
-margin_bottom = 216.0
+margin_bottom = 218.0
 theme = ExtResource( 2 )
 custom_fonts/font = SubResource( 1 )
 text = "LEAVE"
@@ -194,6 +204,7 @@ __meta__ = {
 }
 
 [connection signal="pressed" from="MainMenu/MenuOptions/Join" to="MainMenu" method="_on_Join_pressed"]
+[connection signal="pressed" from="MainMenu/MenuOptions/Host" to="MainMenu" method="_on_Join_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/Meet" to="MainMenu" method="_on_Meet_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/Options" to="MainMenu" method="_on_Options_pressed"]
 [connection signal="pressed" from="MainMenu/MenuOptions/Election" to="MainMenu" method="_on_Election_pressed"]

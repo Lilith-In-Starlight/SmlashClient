@@ -36,6 +36,8 @@ var time_since_attack := 0
 
 # Server Vars
 var go_to := Vector2(0, 0)
+var last_go_to := Vector2(0, 0)
+var dir := Vector2(0, 0)
 var go_at := 0
 
 var time_damaged := 0

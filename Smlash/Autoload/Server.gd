@@ -21,6 +21,7 @@ var local_data := {
 	"position" : Vector2(0, 0),
 	"vspeed" : Vector2(0, 0),
 	"cspeed" : 0.0,
+	"inputs" : []
 }
 
 var local_updated := false
